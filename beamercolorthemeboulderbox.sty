@@ -26,15 +26,18 @@
 %R162 G164 B163
 %#A2A4A3
 \definecolor{CULightGray}{RGB}{162,164,163}
+% #943126
+%R148 G49 B38
+\definecolor{rustred}{RGB}{148,49,38}
 
 
 \setbeamercolor{block title}{fg=white,bg=CUGold}
-\setbeamercolor{block title alerted}{use=alerted text,fg=white,bg=alerted text.fg!75!black}
-\setbeamercolor{block title example}{use=structure,fg=white,bg=structure.fg!75!black}
+\setbeamercolor{block title alerted}{use=alerted text,fg=white,bg=rustred}
+\setbeamercolor{block title example}{use=structure,fg=white,bg=CUDarkGray}
 
 \setbeamercolor{block body}{parent=normal text,use=block title,bg=CULightGray}
-\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=block title alerted.bg!10!bg}
-\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=block title example.bg!10!bg}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=block title alerted.bg!50!bg}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=CULightGray}
 
 \mode
 <all>
