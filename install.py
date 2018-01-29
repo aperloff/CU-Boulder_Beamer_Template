@@ -14,6 +14,8 @@ parser.add_argument("-nha","--nohash", help="Will run texhash command once the f
                     action="store_false")
 group.add_argument("-q", "--quiet", help="decrease output verbosity to minimal amount",
                    action="store_true")
+parser.add_argument("-m","--macports", help="modify the beamer base path on OSX if the user installed TexLive using macports",
+                    action="store_true")
 parser.add_argument("-p","--path", help="alternate path to the beamer base folder in the latex distribution")
 parser.add_argument("-t","--texhash", help="alternate path to the texhash executable")
 group.add_argument("-v", "--verbose", help="Increase output verbosity of lcg-cp (-v) or srm (-debug) commands",
@@ -37,6 +39,7 @@ DOHASH            = args.nohash
 TEXLIVE_YEAR      = args.texlive_year
 ALTERNATE_PATH    = args.path
 ALTERNATE_TEXHASH = args.texhash
+MACPORTS          = args.macports
 
 
 theme_path = ""
@@ -51,7 +54,7 @@ def check_linux_folders():
     global theme_path
     global color_path
     global outer_path
-    basepath = ALTERNATE_PATH if not ALTERNATE_PATH=="" else "/usr/share/texmf/tex/latex/beamer/"
+    basepath = ALTERNATE_PATH if not ALTERNATE_PATH==None else "/usr/share/texmf/tex/latex/beamer/"
     theme_path = basepath+"base/themes/theme/"
     color_path = basepath+"base/themes/color/"
     outer_path = basepath+"base/themes/outer/"
@@ -81,10 +84,31 @@ def check_osx_folders():
     global theme_path
     global color_path
     global outer_path
-    basepath = ALTERNATE_PATH if not ALTERNATE_PATH=="" else "/usr/local/texlive/"+TEXLIVE_YEAR+"/texmf-dist/tex/latex/beamer/"
-    theme_path = basepath+"themes/theme/"
-    color_path = basepath+"themes/color/"
-    outer_path = basepath+"themes/outer/"
+
+    # Check for the base path to the files
+    basepath=""
+    if ALTERNATE_PATH != None:
+        basepath = ALTERNATE_PATH
+    elif MACPORTS:
+        basepath = "/opt/local/share/texmf-texlive/tex/latex/"
+    else:
+        basepath = "/usr/local/texlive/"+TEXLIVE_YEAR+"/texmf-dist/tex/latex/"
+    texlive = os.path.isdir(basepath)
+    if not QUIET: print "TexLive exists? " + str(texlive)
+    if not os.path.isdir(basepath):
+        print "ERROR::The base bath to the texlive distribution ("+str(basepath)+")does not exist."
+        print "Cannot continue."
+        sys.exit()
+
+    # Check to see if the beamertheme-boulder folder needs to be made
+    basepath+="/beamertheme-boulder/"
+    if not QUIET: print "Make beamertheme-boulder folder? " + str(not os.path.isdir(basepath))
+    if not os.path.isdir(basepath):
+        os.mkdir(basepath)
+
+    theme_path = basepath
+    color_path = basepath
+    outer_path = basepath
     theme = os.path.isdir(theme_path)
     color = os.path.isdir(color_path)
     outer = os.path.isdir(outer_path)
@@ -158,7 +182,7 @@ def copy_files():
     copyfileBeamerDict = {
         'theme' : (theme_path, "beamerthemeboulder.sty"),
         'color' : (color_path, "beamercolorthemeboulder.sty", "beamercolorthemeboulderbox.sty"),
-        'outer' : (outer_path, "beamerouterthemeshadowboulder.sty", "beamerouterthemesplitboulder.sty", "UniversityLogos/beamerouterthemeboulderLogoBox.png", "ExperimentLogos/beamerouterthemeCMS.png","ExperimentLogos/beamerouterthemeCDF.png","LaboritoryLogos/beamerouterthemeCERN.png","LaboritoryLogos/beamerouterthemeFNAL.png")
+        'outer' : (outer_path, "beamerouterthememiniframesboulder.sty", "UniversityLogos/beamerouterthemeboulderlogoreverse.pdf", "UniversityLogos/beamerouterthemeboulderlogoonelinecrop.pdf", "ExperimentLogos/beamerouterthemeCMS.png","ExperimentLogos/beamerouterthemeCDF.png","LaboritoryLogos/beamerouterthemeCERN.png","LaboritoryLogos/beamerouterthemeFNAL.png")
     }
 
     if VERBOSE and not QUIET:
@@ -167,7 +191,7 @@ def copy_files():
         pprint.pprint(copyfileBeamerDict)
         print
 
-    copy_set_of_files(copyfileBeamerDict, "Beamer/")
+    copy_set_of_files(copyfileBeamerDict, "./")
     print
 
 def do_tex_hash():
@@ -175,14 +199,17 @@ def do_tex_hash():
     print "* Running texhash ... *"
     print "***********************"
 
-    if (ALTERNATE_TEXHASH!=""):
-         os.system(ALTERNATE_TEXHASH+"/texhash")
+    if (ALTERNATE_TEXHASH!=None):
+        os.system(ALTERNATE_TEXHASH+"/texhash")
     elif OS=="OSX":
-         os.system("/usr/local/texlive/"+TEXLIVE_YEAR+"/bin/x86_64-darwin/texhash")
+        if MACPORTS:
+            os.system("/opt/local/bin/texhash")
+        else:
+            os.system("/usr/local/texlive/"+TEXLIVE_YEAR+"/bin/x86_64-darwin/texhash")
     elif OS=="Linux":
-         os.system("/usr/local/texlive/"+TEXLIVE_YEAR+"/bin/x86_64-linux/texhash")
+        os.system("/usr/local/texlive/"+TEXLIVE_YEAR+"/bin/x86_64-linux/texhash")
     else:
-         os.system("texhash")
+        os.system("texhash")
 
 run_checks()
 copy_files()

@@ -1,0 +1,40 @@
+%% ---------------------------------------------------------------------------
+%% Copyright 2018 Alexx Perloff
+%%
+%% Unofficial beamer theme in the colors of the University of Colorado Boulder, USA.
+%%
+%% The original template was based on the Warsaw theme.
+%%
+%% This work is licensed under a Creative Commons Attribution-ShareAlike 4.0
+%% International License (https://creativecommons.org/licenses/by-sa/4.0/).
+%% ---------------------------------------------------------------------------
+
+\mode<presentation>
+
+%C0 M10 Y48 K22
+%(PANTONE® 4525 C)
+%R207 G184 B124
+%#CFB87C
+\definecolor{CUGold}{RGB}{207,184,124}
+%C38 M28 Y21 K63
+%(PANTONE® 425 C )
+%R86 G90 B92
+%#565A5C
+\definecolor{CUDarkGray}{RGB}{86,90,92}
+%C16 M11 Y11 K29
+%(PANTONE® 422 C)
+%R162 G164 B163
+%#A2A4A3
+\definecolor{CULightGray}{RGB}{162,164,163}
+
+
+\setbeamercolor{block title}{fg=white,bg=CUGold}
+\setbeamercolor{block title alerted}{use=alerted text,fg=white,bg=alerted text.fg!75!black}
+\setbeamercolor{block title example}{use=structure,fg=white,bg=structure.fg!75!black}
+
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=CULightGray}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=block title alerted.bg!10!bg}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=block title example.bg!10!bg}
+
+\mode
+<all>

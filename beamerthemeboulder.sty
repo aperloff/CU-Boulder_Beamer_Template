@@ -1,0 +1,83 @@
+%% ---------------------------------------------------------------------------
+%% Copyright 2018 Alexx Perloff
+%%
+%% Unofficial beamer theme in the colors of the University of Colorado Boulder, USA.
+%%
+%% The original template was based on the Warsaw theme.
+%%
+%% This work is licensed under a Creative Commons Attribution-ShareAlike 4.0
+%% International License (https://creativecommons.org/licenses/by-sa/4.0/).
+%% ---------------------------------------------------------------------------
+
+\RequirePackage[overlay,absolute]{textpos}
+%% Options
+%\DeclareOptionBeamer{ULogo}{\PassOptionsToPackage{ULogo}{beamerouterthememiniframesboulder}}
+%\DeclareOptionBeamer{expLogo}{\PassOptionsToPackage{expLogo=#1}{beamerouterthememiniframesboulder}}
+\newif\ifbeamer@ULogo
+\beamer@ULogofalse
+\DeclareOptionBeamer{ULogo}{\beamer@ULogotrue}
+\def\beamer@Boulder@expLogo{}
+\DeclareOptionBeamer{expLogo}{\def\beamer@Boulder@expLogo{#1}}
+
+\ProcessOptionsBeamer
+
+\mode<presentation>
+
+\useinnertheme[shadow=false]{rounded}
+
+
+% Title page: boulder
+
+\defbeamertemplate*{title page}{boulder}[1][]
+{
+  \vbox{}
+  \vfill
+  \begingroup
+    \centering
+    \vspace*{-1cm}
+    \setbeamercolor*{titlelike}{use=structure,fg=CUGold,bg=black}
+    \begin{beamercolorbox}[sep=8pt,center,#1]{title}
+      \usebeamerfont{title}\inserttitle\par%
+      \ifx\insertsubtitle\@empty%
+      \else%
+        \vskip0.25em%
+        {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+      \fi%
+    \end{beamercolorbox}%
+    \vskip1em\par
+    \begin{beamercolorbox}[sep=8pt,center,#1]{author}
+      \usebeamercolor[CUDarkGray]{}\usebeamerfont{author}\insertauthor
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[sep=8pt,center,#1]{institute}
+	  \usebeamercolor[CUDarkGray]{}\usebeamerfont{institute}\insertinstitute
+    \end{beamercolorbox}
+    %\begin{beamercolorbox}[sep=8pt,center,#1]{date}
+    %  \usebeamerfont{date}\insertdate
+    %\end{beamercolorbox}\vskip0.5em
+    {\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\par}
+
+    \ifbeamer@ULogo
+    	\begin{textblock}{0.6}(0.02,0.85)
+    		\includegraphics[width=3.00in]{beamerouterthemeboulderlogoonelinecrop.pdf}%
+    	\end{textblock}
+    \fi
+    \ifx\beamer@Boulder@expLogo\@empty%
+    	\begin{textblock}{0.25}(0.75,0.84)\end{textblock}
+    \else
+    	\begin{textblock}{0.25}(0.80,0.84)
+	        \includegraphics[width=0.50in]{beameroutertheme\beamer@Boulder@expLogo.png}%
+    	\end{textblock}
+    \fi
+  \endgroup
+  \vfill
+}
+\setbeamertemplate{title page}[boulder][colsep=-4bp,rounded=true,shadow=true]
+
+\useoutertheme[footline=institutelogoauthortitlepages,subsection=false]{miniframesboulder}
+\usecolortheme{boulderbox}
+\usecolortheme{boulder}
+
+\setbeamerfont{block title}{size={}}
+
+\mode
+<all>
