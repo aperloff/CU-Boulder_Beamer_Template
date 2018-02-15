@@ -11,14 +11,12 @@
 
 \RequirePackage[overlay,absolute]{textpos}
 %% Options
-%\DeclareOptionBeamer{ULogo}{\PassOptionsToPackage{ULogo}{beamerouterthememiniframesboulder}}
-%\DeclareOptionBeamer{expLogo}{\PassOptionsToPackage{expLogo=#1}{beamerouterthememiniframesboulder}}
 \newif\ifbeamer@ULogo
 \beamer@ULogofalse
 \DeclareOptionBeamer{ULogo}{\beamer@ULogotrue}
 \def\beamer@Boulder@expLogo{}
 \DeclareOptionBeamer{expLogo}{\def\beamer@Boulder@expLogo{#1}}
-
+\DeclareOptionBeamer{extendedtitleline}{\PassOptionsToPackage{extendedtitleline=#1}{beamerouterthememiniframesboulder}}
 \ProcessOptionsBeamer
 
 \mode<presentation>

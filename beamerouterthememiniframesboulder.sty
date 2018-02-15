@@ -8,18 +8,58 @@
 %
 % See the file doc/licenses/LICENSE for more details.
 
-%\newif\ifbeamer@ULogo
-%\beamer@ULogofalse
-%\DeclareOptionBeamer{ULogo}{\beamer@ULogotrue}
-%\def\beamer@Boulder@expLogo{}
-%\DeclareOptionBeamer{expLogo}{\def\beamer@Boulder@expLogo{#1}}
-%\ProcessOptionsBeamer
-
 \setbeamercolor{section in head/foot}{parent=palette tertiary}
 \setbeamercolor{subsection in head/foot}{parent=palette secondary}
 \setbeamercolor{author in head/foot}{parent=subsection in head/foot}
 \setbeamercolor{title in head/foot}{parent=section in head/foot}
 
+\newif\ifbeamer@longtitleline
+\beamer@longtitlelinefalse
+\DeclareOptionBeamer{longtitleline}{\beamer@longtitlelinetrue}
+\newif\ifbeamer@basictitleline
+\beamer@basictitlelinefalse
+\DeclareOptionBeamer{basictitleline}{\beamer@basictitlelinetrue}
+\newdimen\beamer@Boulder@extendedtitleline
+\beamer@Boulder@extendedtitleline=0pt
+\DeclareOptionBeamer{extendedtitleline}{\beamer@Boulder@extendedtitleline=#1}
+\ProcessOptionsBeamer
+
+\ifbeamer@longtitleline%
+    %frametitle template using help from https://tex.stackexchange.com/questions/343517/beamer-full-width-hrule-below-frame-title
+    \setbeamertemplate{frametitle}{%
+        \usebeamerfont{frametitle}\insertframetitle\strut%
+        \vskip-.25\baselineskip%
+        \leaders\vrule width \paperwidth\vskip0.8pt%
+        \vskip0pt%
+        \nointerlineskip
+    }
+\else%
+    \ifbeamer@basictitleline%
+        %For a closer underline https://tex.stackexchange.com/questions/50637/closer-underline
+        \setbeamertemplate{frametitle}{%
+            \usebeamerfont{frametitle}\underline{\smash{\insertframetitle}}
+        }
+    \else%
+        %For fancy underlines https://alexwlchan.net/2017/10/latex-underlines/
+        %For line thickness using the ulem package https://tex.stackexchange.com/questions/257330/ulem-package-horizontal-line-is-too-thin
+        \RequirePackage{ulem}
+        \RequirePackage{contour}
+        \renewcommand{\ULdepth}{1.8pt}
+        \renewcommand{\ULthickness}{0.8pt}
+        \contourlength{0.8pt}
+        \newcommand{\myuline}[1]{%
+            \uline{\phantom{#1}}%
+            \llap{\contour{white}{#1}}%
+        }
+        \setbeamertemplate{frametitle}{%
+            \ifdim\beamer@Boulder@extendedtitleline>0pt%
+                \usebeamerfont{frametitle}\myuline{\insertframetitle\hspace{\beamer@Boulder@extendedtitleline}}
+            \else%
+                \usebeamerfont{frametitle}\myuline{\insertframetitle}
+            \fi%
+        }
+    \fi%
+\fi%
 
 \def\beamer@theme@footline@empty{}
 \def\beamer@theme@footline@authorinstitute{
