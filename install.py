@@ -182,7 +182,7 @@ def copy_files():
     copyfileBeamerDict = {
         'theme' : (theme_path, "beamerthemeboulder.sty"),
         'color' : (color_path, "beamercolorthemeboulder.sty", "beamercolorthemeboulderbox.sty"),
-        'outer' : (outer_path, "beamerouterthememiniframesboulder.sty", "UniversityLogos/beamerouterthemeboulderlogoreverse.pdf", "UniversityLogos/beamerouterthemeboulderlogoonelinecrop.pdf", "ExperimentLogos/beamerouterthemeCMS.png","ExperimentLogos/beamerouterthemeCDF.png","LaboritoryLogos/beamerouterthemeCERN.png","LaboritoryLogos/beamerouterthemeFNAL.png")
+        'outer' : (outer_path, "beamerouterthememiniframesboulder.sty", "UniversityLogos/beamerouterthemeboulderlogoreverse.pdf", "UniversityLogos/beamerouterthemeboulderlogoonelinecrop.pdf", "UniversityLogos/beamerouterthemeboulderlogoflcrop.pdf", "ExperimentLogos/beamerouterthemeCMS.png","ExperimentLogos/beamerouterthemeCDF.png","LaboritoryLogos/beamerouterthemeCERN.png","LaboritoryLogos/beamerouterthemeFNAL.png")
     }
 
     if VERBOSE and not QUIET:

@@ -10,10 +10,10 @@
 %% ---------------------------------------------------------------------------
 
 \RequirePackage[overlay,absolute]{textpos}
+
 %% Options
-\newif\ifbeamer@ULogo
-\beamer@ULogofalse
-\DeclareOptionBeamer{ULogo}{\beamer@ULogotrue}
+\def\beamer@Boulder@ULogo{}
+\DeclareOptionBeamer{ULogo}{\def\beamer@Boulder@ULogo{#1}}
 \def\beamer@Boulder@expLogo{}
 \DeclareOptionBeamer{expLogo}{\def\beamer@Boulder@expLogo{#1}}
 \DeclareOptionBeamer{extendedtitleline}{\PassOptionsToPackage{extendedtitleline=#1}{beamerouterthememiniframesboulder}}
@@ -54,10 +54,22 @@
     %\end{beamercolorbox}\vskip0.5em
     {\usebeamercolor[fg]{titlegraphic}\inserttitlegraphic\par}
 
-    \ifbeamer@ULogo
-    	\begin{textblock}{0.6}(0.02,0.85)
-    		\includegraphics[width=3.00in]{beamerouterthemeboulderlogoonelinecrop.pdf}%
-    	\end{textblock}
+    %\ifbeamer@ULogo
+    \ifx\beamer@Boulder@ULogo\@empty%
+      \begin{textblock}{0.6}(0.02,0.85)\end{textblock}
+    \else
+      \begin{textblock}{0.6}(0.02,0.80)
+        \vspace*{\fill}
+        {
+        \begin{figure}[tb]
+          \begin{flushleft}
+            \includegraphics[height=0.50in]{beameroutertheme\beamer@Boulder@ULogo.pdf}% width=3.00in
+          \end{flushleft}
+        \end{figure}
+        }
+        \vspace*{\fill}
+        \clearpage
+      \end{textblock}
     \fi
     \ifx\beamer@Boulder@expLogo\@empty%
     	\begin{textblock}{0.25}(0.75,0.84)\end{textblock}
